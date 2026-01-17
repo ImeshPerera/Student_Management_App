@@ -24,7 +24,7 @@ function emailvalidation(element) {
 
 function passwordvalidation(element) {
     const password = document.getElementById(element).value;
-    const passwordRegex = /^[A-Za-z]{3,}$/;
+    const passwordRegex = /^[A-Za-z0-9]{3,}$/;
 
     const input = document.getElementById(element);
 
@@ -64,6 +64,46 @@ function login() {
             localStorage.setItem("token", json.token);
             localStorage.setItem("username", json.user.name);
             window.location.href = "dashboard.html";
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function register() {
+    const username = document.getElementById("InputName").value;
+    const useremail = document.getElementById("InputEmail").value;
+    const password = document.getElementById("InputPassword").value;
+    const rePassword = document.getElementById("InputRePassword").value;
+
+    if (!emailvalidation("useremail")) {
+        alert("Please enter a valid email address.");
+        return;
+    } else if (!passwordvalidation("password") && !passwordvalidation("rePassword")) {
+        alert("Please enter a valid password.");
+        return;
+    } else if (password != rePassword) {
+        alert("Passwords do not match.");
+        return;
+    } else if (username.length < 3) {
+        alert("Username must be at least 3 characters long.");
+        return;
+    }
+
+    fetch('https://student-api.acpt.lk/api/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: username,
+            email: useremail,
+            password: password
+        })
+    })
+        .then(response => response.json())
+        .then(json => {
+            alert(json.messege);
         })
         .catch(error => {
             console.error('Error:', error);

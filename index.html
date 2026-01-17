@@ -23,14 +23,15 @@
                 <div class="h50 d-flex flex-column align-items-center justify-content-around gap-2 p-3">
                     <h3 class="mb-4">LOGIN</h3>
                     <div class="mb-3 w-100 mx-2 field">
-                        <input type="text" id="InputEmail" onkeyup="emailvalidation('InputEmail');">
+                        <input type="text" id="InputEmail" onkeyup="emailvalidation('InputEmail');" required>
                         <label class="label" for="InputEmail">Email address</label>
 
                     </div>
                     <div class="mb-3 w-100 mx-2 field">
                         <input type="checkbox" id="eyeToggle" hidden>
                         <label for="eyeToggle" class="eye" onclick="unhide('InputPassword');"></label>
-                        <input type="password" id="InputPassword" onkeyup="passwordvalidation('InputPassword');">
+                        <input type="password" id="InputPassword" onkeyup="passwordvalidation('InputPassword');"
+                            required>
                         <label class="label" for="InputPassword">Password</label>
 
                     </div>

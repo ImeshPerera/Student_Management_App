@@ -27,19 +27,21 @@
                         <label class="label" for="InputName">Name</label>
                     </div>
                     <div class="mb-3 w-100 mx-2 field">
-                        <input type="email" id="InputEmail" onkeyup="emailvalidation('InputEmail');">
+                        <input type="text" id="InputEmail" onkeyup="emailvalidation('InputEmail');" required>
                         <label class="label" for="InputEmail">Email address</label>
                     </div>
                     <div class="mb-3 w-100 mx-2 field">
                         <input type="checkbox" id="eyeToggle" hidden>
                         <label for="eyeToggle" class="eye" onclick="unhide('InputPassword');"></label>
-                        <input type="password" id="InputPassword" onkeyup="passwordvalidation('InputPassword');">
+                        <input type="password" id="InputPassword" onkeyup="passwordvalidation('InputPassword');"
+                            required>
                         <label class="label" for="InputPassword">Password</label>
                     </div>
                     <div class="mb-3 w-100 mx-2 field">
                         <input type="checkbox" id="reeyeToggle" hidden>
                         <label for="reeyeToggle" class="eye" onclick="unhide('InputRePassword');"></label>
-                        <input type="password" id="InputRePassword" required>
+                        <input type="password" id="InputRePassword" onkeyup="passwordvalidation('InputRePassword');"
+                            required>
                         <label class="label" for="InputRePassword">Re-Type Password</label>
                     </div>
                     <button type="submit" class="btn btn-light w-50 p-2 fs-5">Submit</button>
