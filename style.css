@@ -69,6 +69,10 @@ html {
   background-image: url("asset/eye-slash-regular.svg");
 }
 
+#reeyeToggle:checked ~ .eye {
+  background-image: url("asset/eye-slash-regular.svg");
+}
+
 .h50 {
   min-height: 30vh;
 }
@@ -78,4 +82,10 @@ html {
   padding: 20px;
   border-bottom-right-radius: 50px;
   box-shadow: 15px 1px 15px 5px rgba(0, 0, 0, 0.1);
+}
+
+.img-logo {
+  width: 100%;
+  display: block;
+  margin: 0 auto 20px auto;
 }

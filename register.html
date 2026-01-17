@@ -15,38 +15,43 @@
         <div class="bg-info"></div>
         <div
             class="col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 vh-100 d-flex justify-content-center align-items-center box">
+
             <div class="w-100 px-3">
                 <div>
                     <img src="asset/logo.png" alt="" class="img-logo">
                 </div>
                 <form class="h50 d-flex flex-column align-items-center justify-content-around gap-2 p-3">
-                    <h3 class="mb-4">LOGIN</h3>
+                    <h3 class="mb-4">REGISTER</h3>
+                    <div class="mb-3 w-100 mx-2 field">
+                        <input type="text" id="InputName" required>
+                        <label class="label" for="InputName">Name</label>
+                    </div>
                     <div class="mb-3 w-100 mx-2 field">
                         <input type="email" id="InputEmail" required>
                         <label class="label" for="InputEmail">Email address</label>
-
                     </div>
                     <div class="mb-3 w-100 mx-2 field">
                         <input type="checkbox" id="eyeToggle" hidden>
                         <label for="eyeToggle" class="eye"></label>
                         <input type="password" id="InputPassword" required>
                         <label class="label" for="InputPassword">Password</label>
-
                     </div>
-                    <div class="mb-3 form-check mx-2 w-100 d-flex justify-content-start fs-5">
-                        <input type="checkbox" class="form-check-input" id="rememberCheck">
-                        <label class="ps-3" for="rememberCheck">Remember me</label>
+                    <div class="mb-3 w-100 mx-2 field">
+                        <input type="checkbox" id="reeyeToggle" hidden>
+                        <label for="reeyeToggle" class="eye"></label>
+                        <input type="password" id="InputRePassword" required>
+                        <label class="label" for="InputRePassword">Re-Type Password</label>
                     </div>
                     <button type="submit" class="btn btn-light w-50 p-2 fs-5">Submit</button>
                 </form>
                 <div class="text-center mt-3">
-                    <span class="mt-4" href="#">New User? <a href="register.html">Register Here</a></span>
+                    <span class="mt-4" href="#">Already Registered? <a href="index.html">Login Here</a></span>
                 </div>
             </div>
         </div>
         <div
             class="d-none d-md-flex col-md-6 col-lg-7 col-xl-8 col-xxl-9 vh-100 d-flex justify-content-center align-items-center">
-            <img src="asset/bg-image2.png" alt="" class="img-fluid">
+            <img src="asset/bg-image.png" alt="" class="img-fluid">
         </div>
     </div>
 </body>
