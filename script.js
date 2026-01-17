@@ -136,3 +136,8 @@ function clearregister() {
     document.getElementById("InputPassword").value = "";
     document.getElementById("InputRePassword").value = "";
 }
+
+function getuser() {
+    const username = localStorage.getItem("username");
+    document.getElementById("username").innerText = username;
+}
