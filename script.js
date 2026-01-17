@@ -8,10 +8,10 @@ function unhide(element) {
 }
 
 function emailvalidation(element) {
-    const email = document.getElementById(element).value;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,4}$/;
+    let email = document.getElementById(element).value;
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,4}$/;
 
-    const input = document.getElementById(element);
+    let input = document.getElementById(element);
 
     if (!emailRegex.test(email)) {
         input.classList.add("inputdanger");
@@ -23,10 +23,10 @@ function emailvalidation(element) {
 }
 
 function passwordvalidation(element) {
-    const password = document.getElementById(element).value;
-    const passwordRegex = /^[A-Za-z0-9]{3,}$/;
+    let password = document.getElementById(element).value;
+    let passwordRegex = /^[A-Za-z0-9]{3,}$/;
 
-    const input = document.getElementById(element);
+    let input = document.getElementById(element);
 
     if (!passwordRegex.test(password)) {
         input.classList.add("inputdanger");
@@ -40,12 +40,16 @@ function passwordvalidation(element) {
 function login() {
     const useremail = document.getElementById("InputEmail").value;
     const password = document.getElementById("InputPassword").value;
+    var myalert = document.getElementById("alert");
+    myalert.classList.add("d-none");
 
     if (!emailvalidation("InputEmail")) {
-        alert("Please enter a valid email address.");
+        myalert.classList.remove("d-none");
+        myalert.innerText = "Please enter a valid email address.";
         return;
     } else if (!passwordvalidation("InputPassword")) {
-        alert("Please enter a valid password.");
+        myalert.classList.remove("d-none");
+        myalert.innerText = "Please enter a valid password.";
         return;
     }
 
@@ -61,12 +65,18 @@ function login() {
     })
         .then(response => response.json())
         .then(json => {
+            myalert.classList.remove("d-none", "alert-danger");
+            myalert.classList.add("alert-success");
+            myalert.innerText = "Login successful! Redirecting to dashboard...";
             localStorage.setItem("token", json.token);
             localStorage.setItem("username", json.user.name);
-            window.location.href = "dashboard.html";
+            setInterval(() => {
+                window.location.href = "dashboard.html";
+            }, 2000);
         })
         .catch(error => {
-            console.error('Error:', error);
+            myalert.classList.remove("d-none");
+            myalert.innerText = "Login failed. Please check your credentials." + "\n" + error;
         });
 }
 
@@ -75,18 +85,24 @@ function register() {
     const useremail = document.getElementById("InputEmail").value;
     const password = document.getElementById("InputPassword").value;
     const rePassword = document.getElementById("InputRePassword").value;
+    var myalert = document.getElementById("alert");
+    myalert.classList.add("d-none");
 
-    if (!emailvalidation("useremail")) {
-        alert("Please enter a valid email address.");
+    if (!emailvalidation("InputEmail")) {
+        myalert.classList.remove("d-none");
+        myalert.innerText = "Please enter a valid email address.";
         return;
-    } else if (!passwordvalidation("password") && !passwordvalidation("rePassword")) {
-        alert("Please enter a valid password.");
+    } else if (!passwordvalidation("InputPassword") && !passwordvalidation("InputRePassword")) {
+        myalert.classList.remove("d-none");
+        myalert.innerText = "Please enter a valid password.";
         return;
     } else if (password != rePassword) {
-        alert("Passwords do not match.");
+        myalert.classList.remove("d-none");
+        myalert.innerText = "Passwords do not match.";
         return;
     } else if (username.length < 3) {
-        alert("Username must be at least 3 characters long.");
+        myalert.classList.remove("d-none");
+        myalert.innerText = "Username must be at least 3 characters long.";
         return;
     }
 
@@ -103,9 +119,20 @@ function register() {
     })
         .then(response => response.json())
         .then(json => {
-            alert(json.messege);
+            myalert.classList.remove("d-none", "alert-danger");
+            myalert.classList.add("alert-success");
+            myalert.innerText = json.message + " Please login.";
+            clearregister();
         })
         .catch(error => {
-            console.error('Error:', error);
+            myalert.classList.remove("d-none");
+            myalert.innerText = "Registration failed. Please check your credentials." + "\n" + error;
         });
+}
+
+function clearregister() {
+    document.getElementById("InputName").value = "";
+    document.getElementById("InputEmail").value = "";
+    document.getElementById("InputPassword").value = "";
+    document.getElementById("InputRePassword").value = "";
 }

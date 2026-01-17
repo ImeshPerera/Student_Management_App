@@ -94,3 +94,8 @@ html {
 .inputdanger {
   border: 2px solid red !important;
 }
+
+.alert {
+  top: 10px;
+  left: 10px;
+}
