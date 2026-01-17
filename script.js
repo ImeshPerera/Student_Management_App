@@ -141,3 +141,31 @@ function getuser() {
     const username = localStorage.getItem("username");
     document.getElementById("username").innerText = username;
 }
+
+
+function addStudent() {
+    // To be implemented
+}
+
+function deleteStudent() {
+    // To be implemented
+}
+
+function updateStudent() {
+    // To be implemented
+}
+
+function logincheck() {
+    const token = localStorage.getItem("token");
+    if (token) {
+        window.location.href = "dashboard.html";
+    } else {
+        window.location.href = "index.html";
+    }
+}
+
+function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    window.location.href = "index.html";
+}
