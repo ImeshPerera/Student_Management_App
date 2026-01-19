@@ -37,19 +37,38 @@ function passwordvalidation(element) {
     }
 }
 
+function myalert(status, message) {
+    var alertBox = document.getElementById("alert");
+
+    alertBox.classList.add("d-none");
+    alertBox.classList.remove("alert-success", "alert-danger");
+
+    if (status === "error") {
+        alertBox.classList.remove("d-none");
+        alertBox.classList.add("alert-danger");
+        alertBox.innerText = message;
+    }
+    else if (status === "success") {
+        alertBox.classList.remove("d-none");
+        alertBox.classList.add("alert-success");
+        alertBox.innerText = message;
+    }
+
+    setTimeout(() => {
+        alertBox.classList.add("d-none");
+    }, 5000);
+}
+
+
 function login() {
     const useremail = document.getElementById("InputEmail").value;
     const password = document.getElementById("InputPassword").value;
-    var myalert = document.getElementById("alert");
-    myalert.classList.add("d-none");
 
     if (!emailvalidation("InputEmail")) {
-        myalert.classList.remove("d-none");
-        myalert.innerText = "Please enter a valid email address.";
+        myalert("error", "Please enter a valid email address.");
         return;
     } else if (!passwordvalidation("InputPassword")) {
-        myalert.classList.remove("d-none");
-        myalert.innerText = "Please enter a valid password.";
+        myalert("error", "Please enter a valid password.");
         return;
     }
 
@@ -65,18 +84,15 @@ function login() {
     })
         .then(response => response.json())
         .then(json => {
-            myalert.classList.remove("d-none", "alert-danger");
-            myalert.classList.add("alert-success");
-            myalert.innerText = "Login successful! Redirecting to dashboard...";
+            myalert("success", "Login successful! Redirecting to dashboard...");
             localStorage.setItem("token", json.token);
             localStorage.setItem("username", json.user.name);
             setInterval(() => {
                 window.location.href = "dashboard.html";
-            }, 2000);
+            }, 1000);
         })
         .catch(error => {
-            myalert.classList.remove("d-none");
-            myalert.innerText = "Login failed. Please check your credentials." + "\n" + error;
+            myalert("error", "Login failed. Please check your credentials." + "\n" + error);
         });
 }
 
@@ -85,24 +101,18 @@ function register() {
     const useremail = document.getElementById("InputEmail").value;
     const password = document.getElementById("InputPassword").value;
     const rePassword = document.getElementById("InputRePassword").value;
-    var myalert = document.getElementById("alert");
-    myalert.classList.add("d-none");
 
     if (!emailvalidation("InputEmail")) {
-        myalert.classList.remove("d-none");
-        myalert.innerText = "Please enter a valid email address.";
+        myalert("error", "Please enter a valid email address.");
         return;
     } else if (!passwordvalidation("InputPassword") && !passwordvalidation("InputRePassword")) {
-        myalert.classList.remove("d-none");
-        myalert.innerText = "Please enter a valid password.";
+        myalert("error", "Please enter a valid password.");
         return;
     } else if (password != rePassword) {
-        myalert.classList.remove("d-none");
-        myalert.innerText = "Passwords do not match.";
+        myalert("error", "Passwords do not match.");
         return;
     } else if (username.length < 3) {
-        myalert.classList.remove("d-none");
-        myalert.innerText = "Username must be at least 3 characters long.";
+        myalert("error", "Username must be at least 3 characters long.");
         return;
     }
 
@@ -119,14 +129,11 @@ function register() {
     })
         .then(response => response.json())
         .then(json => {
-            myalert.classList.remove("d-none", "alert-danger");
-            myalert.classList.add("alert-success");
-            myalert.innerText = json.message + " Please login.";
+            myalert("success", json.message + " Please login.");
             clearregister();
         })
         .catch(error => {
-            myalert.classList.remove("d-none");
-            myalert.innerText = "Registration failed. Please check your credentials." + "\n" + error;
+            myalert("error", "Registration failed. Please check your credentials." + "\n" + error);
         });
 }
 
@@ -143,8 +150,33 @@ function getuser() {
 }
 
 
-function addStudent() {
-    // To be implemented
+function newStudent() {
+    var studentName = document.getElementById("InputName").value;
+    var studentAge = document.getElementById("InputAge").value;
+    var studentAddress = document.getElementById("InputAddress").value;
+    var studentContactNo = document.getElementById("InputContactNo").value;
+
+    fetch('https://student-api.acpt.lk/api/student/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        },
+        body: JSON.stringify({
+            student_name: studentName,
+            student_age: studentAge,
+            student_address: studentAddress,
+            student_contact: studentContactNo
+        })
+    })
+        .then(response => response.text())
+        .then(text => {
+            const message = JSON.parse(text);
+            myalert("success", message);
+        })
+        .catch(error => {
+            myalert("error", "Failed to add student." + "\n" + error);
+        })
 }
 
 function deleteStudent() {
@@ -156,12 +188,12 @@ function updateStudent() {
 }
 
 function logincheck() {
-    const token = localStorage.getItem("token");
-    if (token) {
-        window.location.href = "dashboard.html";
-    } else {
-        window.location.href = "index.html";
-    }
+    // const token = localStorage.getItem("token");
+    // if (token) {
+    //     window.location.href = "dashboard.html";
+    // } else {
+    //     window.location.href = "index.html";
+    // }
 }
 
 function logout() {
