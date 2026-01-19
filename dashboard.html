@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="getuser(); logincheck();" class="d-flex flex-column min-vh-100">
+<body onload="getuser(); getStudents();" class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-light bg-nav absolute-top w-100 d-flex justify-content-center justify-content-lg-between">
         <div class="p-lg-3">
             <div class="navbar-brand m-0 ms-lg-5 d-flex d-lg-block flex-column align-items-center" href="#">
@@ -34,10 +34,9 @@
                     <div class="w-auto">
                         <h3>Student Dashboard</h3>
                     </div>
-                    <button class="btn btn-warning w-25" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add
+                    <button class="btn btn-warning w-25" onclick="mainModalpopup();">Add
                         Student</button>
                 </div>
-
                 <hr>
                 <br>
             </div>
@@ -53,53 +52,8 @@
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>gf</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <div class="d-flex gap-3 gap-lg-5 me-2 me-lg-0">
-                                        <i class="bi bi-pencil-square fs-5"></i>
-                                        <i class="bi bi-trash fs-5"></i>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>gf</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <div class="d-flex gap-3 gap-lg-5 me-2 me-lg-0">
-                                        <i class="bi bi-pencil-square fs-5"></i>
-                                        <i class="bi bi-trash fs-5"></i>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>gf</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <div class="d-flex gap-3 gap-lg-5 me-2 me-lg-0">
-                                        <i class="bi bi-pencil-square fs-5"></i>
-                                        <i class="bi bi-trash fs-5" data-bs-toggle="modal"
-                                            data-bs-target="#deleteBackdrop"></i>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                    <tbody id="tbody">
+
                     </tbody>
                 </table>
             </div>
@@ -116,7 +70,7 @@
         A simple danger alert with Give it a click if you like.
     </div>
 
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal fade" id="mainModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-light">
@@ -152,7 +106,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="deleteBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="deleteBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-light">
@@ -165,7 +119,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" onclick="deleteStudent();" class="btn btn-danger">Submit</button>
+                    <button type="button" id="deleteConfirmButton" class="btn btn-danger">Submit</button>
                 </div>
             </div>
         </div>

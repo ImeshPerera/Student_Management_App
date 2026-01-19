@@ -56,7 +56,7 @@ function myalert(status, message) {
 
     setTimeout(() => {
         alertBox.classList.add("d-none");
-    }, 5000);
+    }, 20000);
 }
 
 
@@ -130,18 +130,17 @@ function register() {
         .then(response => response.json())
         .then(json => {
             myalert("success", json.message + " Please login.");
-            clearregister();
+            clearInputs(["InputName", "InputEmail", "InputPassword", "InputRePassword"]);
         })
         .catch(error => {
             myalert("error", "Registration failed. Please check your credentials." + "\n" + error);
         });
 }
 
-function clearregister() {
-    document.getElementById("InputName").value = "";
-    document.getElementById("InputEmail").value = "";
-    document.getElementById("InputPassword").value = "";
-    document.getElementById("InputRePassword").value = "";
+function clearInputs(inputs) {
+    inputs.forEach(inputId => {
+        document.getElementById(inputId).value = "";
+    });
 }
 
 function getuser() {
@@ -149,6 +148,53 @@ function getuser() {
     document.getElementById("username").innerText = username;
 }
 
+function getStudents() {
+    var tbody = document.getElementById("tbody");
+    tbody.innerHTML = "";
+    var innertext = "";
+
+    fetch('https://student-api.acpt.lk/api/student/getAll', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+    })
+        .then(response => response.json())
+        .then(json => {
+            json.forEach(student => {
+                innertext += `
+                <tr>
+                    <td>${student.id}</td>
+                    <td>${student.student_name}</td>
+                    <td>${student.student_age}</td>
+                    <td>${student.student_address}</td>
+                    <td>${student.student_contact}</td>
+                    <td>
+                        <div class="d-flex justify-content-around">
+                            <div class="d-flex gap-3 gap-lg-5 me-2 me-lg-0">
+                                <i onclick="updateStudent(${student.id}); highlightIcon(this, 'icon-blue')" class="bi bi-pencil-square fs-5"></i>
+                                <i onclick="deleteStudentpopup(${student.id}); highlightIcon(this, 'icon-red');" class="bi bi-trash fs-5"></i>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                `;
+            });
+            tbody.innerHTML = innertext;
+        })
+        .catch(error => {
+            myalert("error", "Failed to fetch students." + "\n" + error);
+        });
+
+}
+
+function highlightIcon(icon, colorClass, duration = 2000) {
+    icon.classList.add(colorClass);
+    setTimeout(() => {
+        icon.classList.remove(colorClass);
+    }, duration);
+}
 
 function newStudent() {
     var studentName = document.getElementById("InputName").value;
@@ -171,17 +217,62 @@ function newStudent() {
     })
         .then(response => response.text())
         .then(text => {
-            const message = JSON.parse(text);
-            myalert("success", message);
+            text = text.replaceAll('"', '');
+            if (text.includes("error")) {
+                throw new Error(text);
+            } else {
+                myalert("success", text);
+                clearInputs(["InputName", "InputAge", "InputAddress", "InputContactNo"]);
+                opendmodal.hide();
+                getStudents();
+            }
+
         })
         .catch(error => {
             myalert("error", "Failed to add student." + "\n" + error);
         })
 }
 
-function deleteStudent() {
-    // To be implemented
+let opendmodal;
+
+function mainModalpopup() {
+    opendmodal = new bootstrap.Modal(document.getElementById('mainModal'));
+    opendmodal.show();
 }
+
+function deleteStudentpopup(studentId) {
+    opendmodal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    opendmodal.show();
+    document.getElementById("deleteConfirmButton").onclick = function () {
+        deleteStudent(studentId);
+    }
+}
+
+async function deleteStudent(studentId) {
+    try {
+        const response = await fetch(`https://student-api.acpt.lk/api/student/delete/${studentId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            }
+        }
+        );
+
+        const text = (await response.text()).replaceAll('"', '');
+
+        if (!response.ok) {
+            throw new Error(text || `HTTP Error ${response.status}`);
+        }
+
+        myalert("success", text);
+        opendmodal.hide();
+        getStudents();
+
+    } catch (error) {
+        myalert("error", error.message);
+    }
+}
+
 
 function updateStudent() {
     // To be implemented
