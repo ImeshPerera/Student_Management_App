@@ -1,3 +1,9 @@
+document.addEventListener("DOMContentLoaded", init);
+
+function init() {
+    logincheck();
+}
+
 function unhide(element) {
     const input = document.getElementById(element);
     if (input.type === "password") {
@@ -312,19 +318,16 @@ async function deleteStudent(studentId) {
             }
         }
         );
-
-        const text = (await response.text()).replaceAll('"', '');
-
         if (!response.ok) {
-            throw new Error(text || `HTTP Error ${response.status}`);
+            throw new Error(`Request failed (HTTP ${response.status})`);
         }
-
+        const text = (await response.text()).replaceAll('"', '');
         myalert("success", text);
         opened_modal.hide();
         getStudents();
 
     } catch (error) {
-        myalert("error", error.message);
+        myalert("error", error.message + " Failed to delete student.");
     }
 }
 
@@ -342,16 +345,58 @@ function updateStudent(studentId) {
     if (!modelvalidation()) {
         return;
     }
-    myalert("success", "Updating student ID: " + studentId);
+
+    var studentName = document.getElementById("InputName").value;
+    var studentAge = document.getElementById("InputAge").value;
+    var studentAddress = document.getElementById("InputAddress").value;
+    var studentContactNo = document.getElementById("InputContactNo").value;
+
+    fetch(`https://student-api.acpt.lk/api/student/update/${studentId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        },
+        body: JSON.stringify({
+            student_name: studentName,
+            student_age: studentAge,
+            student_address: studentAddress,
+            student_contact: studentContactNo
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Request failed (HTTP ${response.status})`);
+            }
+            return response.text();
+        })
+        .then(text => {
+            text = text.replaceAll('"', '');
+            if (text.includes("error")) {
+                throw new Error(text);
+            } else {
+                myalert("success", text);
+                clearInputs(["InputName", "InputAge", "InputAddress", "InputContactNo"]);
+                opened_modal.hide();
+                getStudents();
+            }
+        })
+        .catch(error => {
+            myalert("error", error.message + " Failed to Update student.");
+        });
 }
 
 function logincheck() {
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    //     window.location.href = "dashboard.html";
-    // } else {
-    //     window.location.href = "index.html";
-    // }
+    const token = localStorage.getItem("token");
+    const currentPage = window.location.pathname.split("/").pop();
+
+    if (token && currentPage !== "dashboard.html") {
+        window.location.href = "dashboard.html";
+    }
+
+    if (!token && currentPage !== "index.html") {
+        window.location.href = "index.html";
+    }
 }
 
 function logout() {
