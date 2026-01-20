@@ -11,13 +11,11 @@ function emailvalidation(element) {
     let email = document.getElementById(element).value;
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,4}$/;
 
-    let input = document.getElementById(element);
-
     if (!emailRegex.test(email)) {
-        input.classList.add("inputdanger");
+        inputstatus(element, "error");
         return false;
     } else {
-        input.classList.remove("inputdanger");
+        inputstatus(element, "success");
         return true;
     }
 }
@@ -26,15 +24,26 @@ function passwordvalidation(element) {
     let password = document.getElementById(element).value;
     let passwordRegex = /^[A-Za-z0-9]{3,}$/;
 
-    let input = document.getElementById(element);
-
     if (!passwordRegex.test(password)) {
-        input.classList.add("inputdanger");
+        inputstatus(element, "error");
         return false;
     } else {
-        input.classList.remove("inputdanger");
+        inputstatus(element, "success");
         return true;
     }
+}
+
+function inputstatus(element, status) {
+    let input = document.getElementById(element);
+    if (status === "error") {
+        input.classList.add("inputdanger");
+    } else if (status === "success") {
+        input.classList.remove("inputdanger");
+    }
+
+    setTimeout(() => {
+        input.classList.remove("inputdanger");
+    }, 5000);
 }
 
 function myalert(status, message) {
@@ -56,7 +65,7 @@ function myalert(status, message) {
 
     setTimeout(() => {
         alertBox.classList.add("d-none");
-    }, 20000);
+    }, 5000);
 }
 
 
@@ -110,9 +119,12 @@ function register() {
         return;
     } else if (password != rePassword) {
         myalert("error", "Passwords do not match.");
+        inputstatus("InputPassword", "error");
+        inputstatus("InputRePassword", "error");
         return;
     } else if (username.length < 3) {
         myalert("error", "Username must be at least 3 characters long.");
+        inputstatus("InputName", "error");
         return;
     }
 
@@ -196,7 +208,38 @@ function highlightIcon(icon, colorClass, duration = 2000) {
     }, duration);
 }
 
+function modelvalidation() {
+    const studentName = document.getElementById("InputName").value;
+    const studentAge = document.getElementById("InputAge").value;
+    const studentAddress = document.getElementById("InputAddress").value;
+    const studentContactNo = document.getElementById("InputContactNo").value;
+
+    if (studentName.trim() == "") {
+        myalert("error", "Student name cannot be empty.");
+        inputstatus("InputName", "error");
+        return false;
+    } else if (studentAge.trim() == "" || isNaN(studentAge)) {
+        myalert("error", "Student age must be a valid number.");
+        inputstatus("InputAge", "error");
+        return false;
+    } else if (studentAddress.trim() == "") {
+        myalert("error", "Student address cannot be empty.");
+        inputstatus("InputAddress", "error");
+        return false;
+    } else if (studentContactNo.trim() == "" || isNaN(studentContactNo) || studentContactNo.length < 10) {
+        myalert("error", "Student contact number is invalid.");
+        inputstatus("InputContactNo", "error");
+        return false;
+    }
+
+    return true;
+}
+
 function newStudent() {
+    if (!modelvalidation()) {
+        return;
+    }
+
     var studentName = document.getElementById("InputName").value;
     var studentAge = document.getElementById("InputAge").value;
     var studentAddress = document.getElementById("InputAddress").value;
