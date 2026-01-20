@@ -390,14 +390,16 @@ function logincheck() {
     const token = localStorage.getItem("token");
     const currentPage = window.location.pathname.split("/").pop();
 
-    if (token && currentPage !== "dashboard.html") {
+    if (token && (currentPage === "index.html" || currentPage === "register.html")) {
         window.location.href = "dashboard.html";
+        return;
     }
 
-    if (!token && currentPage !== "index.html") {
+    if (!token && currentPage !== "index.html" && currentPage !== "register.html") {
         window.location.href = "index.html";
     }
 }
+
 
 function logout() {
     localStorage.removeItem("token");
