@@ -34,14 +34,14 @@
                     <div class="w-auto">
                         <h3>Student Dashboard</h3>
                     </div>
-                    <button class="btn btn-warning w-25" onclick="mainModalpopup();">Add
+                    <button class="btn btn-warning w-25" onclick="mainModalpopup('add',null);">Add
                         Student</button>
                 </div>
                 <hr>
                 <br>
             </div>
             <div class="col-11 overflow-x-scroll">
-                <table class="table table-striped text-center">
+                <table class="table table-striped text-center" id="studentsTable">
                     <thead>
                         <tr>
                             <th scope="col">Student&nbsp;ID</th>
@@ -67,7 +67,7 @@
     </footer>
 
     <div class="alert bottom position-absolute d-none" id="alert">
-        A simple danger alert with Give it a click if you like.
+        Something went wrong ?
     </div>
 
     <div class="modal fade" id="mainModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -75,7 +75,7 @@
         <div class="modal-dialog">
             <div class="modal-content bg-light">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Student</h1>
+                    <h1 class="modal-title fs-5" id="mainModalLabel">Add New Student</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -100,7 +100,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" onclick="newStudent();" class="btn btn-dark">Submit</button>
+                    <button type="button" id="mainModalButton" class="btn btn-dark">Submit</button>
                 </div>
             </div>
         </div>

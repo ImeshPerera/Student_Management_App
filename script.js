@@ -185,7 +185,7 @@ function getStudents() {
                     <td>
                         <div class="d-flex justify-content-around">
                             <div class="d-flex gap-3 gap-lg-5 me-2 me-lg-0">
-                                <i onclick="updateStudent(${student.id}); highlightIcon(this, 'icon-blue')" class="bi bi-pencil-square fs-5"></i>
+                                <i onclick="updateStudentLoad(this); highlightIcon(this, 'icon-blue')" class="bi bi-pencil-square fs-5"></i>
                                 <i onclick="deleteStudentpopup(${student.id}); highlightIcon(this, 'icon-red');" class="bi bi-trash fs-5"></i>
                             </div>
                         </div>
@@ -206,6 +206,33 @@ function highlightIcon(icon, colorClass, duration = 2000) {
     setTimeout(() => {
         icon.classList.remove(colorClass);
     }, duration);
+}
+
+let opened_modal;
+
+function mainModalpopup(type, studentId) {
+    opened_modal = new bootstrap.Modal(document.getElementById('mainModal'));
+    const modalLabel = document.getElementById("mainModalLabel");
+    const modalButton = document.getElementById("mainModalButton");
+    if (type === "add") {
+        modalLabel.innerText = "Add New Student";
+        modalButton.innerText = "Add Student";
+        modalButton.onclick = newStudent;
+        clearInputs(["InputName", "InputAge", "InputAddress", "InputContactNo"]);
+    } else if (type === "update") {
+        modalLabel.innerText = "Update Student";
+        modalButton.innerText = "Update Student";
+        modalButton.onclick = () => updateStudent(studentId);
+    }
+    opened_modal.show();
+}
+
+function deleteStudentpopup(studentId) {
+    opened_modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    opened_modal.show();
+    document.getElementById("deleteConfirmButton").onclick = function () {
+        deleteStudent(studentId);
+    }
 }
 
 function modelvalidation() {
@@ -266,7 +293,7 @@ function newStudent() {
             } else {
                 myalert("success", text);
                 clearInputs(["InputName", "InputAge", "InputAddress", "InputContactNo"]);
-                opendmodal.hide();
+                opened_modal.hide();
                 getStudents();
             }
 
@@ -274,21 +301,6 @@ function newStudent() {
         .catch(error => {
             myalert("error", "Failed to add student." + "\n" + error);
         })
-}
-
-let opendmodal;
-
-function mainModalpopup() {
-    opendmodal = new bootstrap.Modal(document.getElementById('mainModal'));
-    opendmodal.show();
-}
-
-function deleteStudentpopup(studentId) {
-    opendmodal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    opendmodal.show();
-    document.getElementById("deleteConfirmButton").onclick = function () {
-        deleteStudent(studentId);
-    }
 }
 
 async function deleteStudent(studentId) {
@@ -308,7 +320,7 @@ async function deleteStudent(studentId) {
         }
 
         myalert("success", text);
-        opendmodal.hide();
+        opened_modal.hide();
         getStudents();
 
     } catch (error) {
@@ -317,8 +329,20 @@ async function deleteStudent(studentId) {
 }
 
 
-function updateStudent() {
-    // To be implemented
+function updateStudentLoad(icon) {
+    const row = icon.closest("tr");
+    document.getElementById("InputName").value = row.cells[1].innerText;
+    document.getElementById("InputAge").value = row.cells[2].innerText;
+    document.getElementById("InputAddress").value = row.cells[3].innerText;
+    document.getElementById("InputContactNo").value = row.cells[4].innerText;
+    mainModalpopup("update", row.cells[0].innerText);
+}
+
+function updateStudent(studentId) {
+    if (!modelvalidation()) {
+        return;
+    }
+    myalert("success", "Updating student ID: " + studentId);
 }
 
 function logincheck() {
