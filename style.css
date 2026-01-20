@@ -1,0 +1,170 @@
+@import url("https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+
+* {
+  font-family: "Averia Libre", system-ui;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  background-color: beige;
+}
+
+.field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.field input {
+  width: 100%;
+  padding: 28px 14px 12px;
+  border: 0px solid white;
+  background-color: #f1f1f1;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  transition: 0.2s ease-in-out;
+}
+
+.field .label {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #606060;
+  pointer-events: none;
+  transition: 0.3s ease;
+  background: transparent;
+}
+
+.field input:focus,
+.field input:valid {
+  box-shadow: 1px 0px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.field input:focus + .label,
+.field input:valid + .label {
+  top: 12px;
+  left: 14px;
+  font-size: 12px;
+}
+
+.eye {
+  width: 25px;
+  height: 25px;
+  background-image: url("asset/eye.png");
+  position: absolute;
+  right: 14px;
+  top: 30%;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+#eyeToggle:checked ~ .eye {
+  background-image: url("asset/eye-slash-regular.svg");
+}
+
+#reeyeToggle:checked ~ .eye {
+  background-image: url("asset/eye-slash-regular.svg");
+}
+
+.h50 {
+  min-height: 30vh;
+}
+
+.box {
+  background-color: rgb(255 176 7 / 50%);
+  padding: 20px;
+  border-bottom-right-radius: 50px;
+  box-shadow: 15px 1px 15px 5px rgba(0, 0, 0, 0.1);
+}
+
+.img-logo {
+  width: 100%;
+  display: block;
+  margin: 0 auto 20px auto;
+}
+
+.inputdanger {
+  border: 2px solid red !important;
+}
+
+.alert {
+  top: 10px;
+  bottom: unset;
+  left: 10px;
+  z-index: 10020;
+}
+
+.alert.bottom {
+  top: unset;
+  bottom: 35px;
+  left: 10px;
+  z-index: 10020;
+}
+
+.bg-nav {
+  background-color: rgb(255 176 7 / 50%);
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
+  overflow-y: unset;
+}
+
+.width-large {
+  width: 100%;
+}
+
+@keyframes pulseRed {
+  0% {
+    text-shadow: 0 0 0 rgba(255, 0, 0, 0.7);
+  }
+  70% {
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.9);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+
+@keyframes pulseBlue {
+  0% {
+    text-shadow: 0 0 0 rgba(13, 110, 253, 0.7);
+  }
+  70% {
+    text-shadow: 0 0 10px rgba(13, 110, 253, 0.9);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(13, 110, 253, 0);
+  }
+}
+
+.icon-red {
+  color: red;
+  animation: pulseRed 3s ease;
+}
+
+.icon-blue {
+  color: #0d6efd;
+  animation: pulseBlue 3s ease;
+}
+
+@media (min-width: 800px) {
+  .overflow-x-scroll {
+    overflow-x: unset;
+    overflow-y: unset;
+  }
+}
+@media (min-width: 1024px) {
+  .width-large {
+    width: unset;
+  }
+}
