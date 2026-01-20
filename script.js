@@ -1,8 +1,4 @@
-document.addEventListener("DOMContentLoaded", init);
-
-function init() {
-    logincheck();
-}
+document.addEventListener("DOMContentLoaded", logincheck);
 
 function unhide(element) {
     const input = document.getElementById(element);
@@ -97,12 +93,19 @@ function login() {
             password: password
         })
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Request failed (HTTP ${response.status})`);
+            }
+            return response.json();
+        })
         .then(json => {
             myalert("success", "Login successful! Redirecting to dashboard...");
+
             localStorage.setItem("token", json.token);
             localStorage.setItem("username", json.user.name);
-            setInterval(() => {
+
+            setTimeout(() => {
                 window.location.href = "dashboard.html";
             }, 1000);
         })
@@ -202,7 +205,7 @@ function getStudents() {
             tbody.innerHTML = innertext;
         })
         .catch(error => {
-            myalert("error", "Failed to fetch students." + "\n" + error);
+            myalert("error", "Failed to get students." + "\n" + error);
         });
 
 }
@@ -390,12 +393,12 @@ function logincheck() {
     const token = localStorage.getItem("token");
     const currentPage = window.location.pathname.split("/").pop();
 
-    if (token && (currentPage === "index.html" || currentPage === "register.html")) {
+    if (token && currentPage !== "dashboard.html") {
         window.location.href = "dashboard.html";
         return;
     }
 
-    if (!token && currentPage !== "index.html" && currentPage !== "register.html") {
+    if (!token && currentPage === "dashboard.html") {
         window.location.href = "index.html";
     }
 }
